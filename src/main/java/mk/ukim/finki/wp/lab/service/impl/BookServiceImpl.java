@@ -1,11 +1,13 @@
 package mk.ukim.finki.wp.lab.service.impl;
 
+import mk.ukim.finki.wp.lab.bootstrap.DataHolder;
 import mk.ukim.finki.wp.lab.model.Book;
 import mk.ukim.finki.wp.lab.repository.BookRepository;
 import mk.ukim.finki.wp.lab.service.BookService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -22,6 +24,9 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> searchBooks(String text, Double rating) {
-        return this.bookRepository.searchBooks(text,rating);
+        return DataHolder.books.stream()
+                .filter(book -> book.getTitle().toLowerCase().equals(text.toLowerCase()))
+                .filter(book -> book.getAverageRating() >= rating)
+                .collect(Collectors.toList());
     }
 }
