@@ -39,13 +39,13 @@ public class BookListServlet extends HttpServlet {
 
         List<Book> books;
 
-        if ((filterName != null && !filterName.isEmpty()) || (filterRatingParam != null && !filterRatingParam.isEmpty())) {
+        if (((filterName != null) && !filterName.isEmpty()) || (filterRatingParam != null && !filterRatingParam.isEmpty())) {
             double filterRating = 0;
             try {
                 filterRating = Double.parseDouble(filterRatingParam);
             } catch (Exception ignored) {}
 
-            
+
             books = bookService.searchBooks(filterName, filterRating);
         } else {
             books = bookService.listAll();
