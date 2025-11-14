@@ -1,4 +1,4 @@
-package mk.ukim.finki.wp.lab.web;
+package mk.ukim.finki.wp.lab.web.servlet;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -34,7 +34,14 @@ public class BookReservationServlet extends HttpServlet {
         String bookTitle = request.getParameter("bookTitle");
         String readerName = request.getParameter("readerName");
         String readerAddress = request.getParameter("readerAddress");
-        int numCopies = Integer.parseInt(request.getParameter("numCopies"));
+//        int numCopies = Integer.parseInt(request.getParameter("numCopies"));
+        String numCopiesParam = request.getParameter("numCopies");
+        int numCopies = 0;
+
+        if (numCopiesParam != null) {
+            numCopies = Integer.parseInt(numCopiesParam);
+        }
+
 
 
         String clientIp = request.getRemoteAddr();

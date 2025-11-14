@@ -24,4 +24,25 @@ public class InMemoryBookRepository implements BookRepository {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public Book add(Book book) {
+        DataHolder.books.add(book);
+        return book;
+    }
+
+    @Override
+    public Book findById(Long id) {
+        return DataHolder.books.stream()
+                .filter(b -> b.getId().equals(id))
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        Book book = findById(id);
+        if (book != null) {
+            DataHolder.books.remove(book);
+        }
+    }
 }
