@@ -1,6 +1,8 @@
 package mk.ukim.finki.wp.lab.service.impl;
 
 import mk.ukim.finki.wp.lab.model.Author;
+import mk.ukim.finki.wp.lab.model.Book;
+import mk.ukim.finki.wp.lab.model.Gender;
 import mk.ukim.finki.wp.lab.repository.AuthorRepository;
 import mk.ukim.finki.wp.lab.service.AuthorService;
 import org.springframework.stereotype.Service;
@@ -18,5 +20,32 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public List<Author> findAll() {
         return authorRepository.findAll();
+    }
+
+    @Override
+    public Author addAuthor(Author author) {
+        return authorRepository.add(author);
+    }
+
+    @Override
+    public void updateAuthor(Long authorId, String name, String surname, String country, String biography, Gender gender) {
+        Author author = authorRepository.findById(authorId);
+        if (author != null) {
+            author.setName(name);
+            author.setSurname(surname);
+            author.setCountry(country);
+            author.setBiography(biography);
+            author.setGender(gender);
+        }
+    }
+
+    @Override
+    public void deleteAuthor(Long authorId) {
+        authorRepository.delete(authorId);
+    }
+
+    @Override
+    public Author findById(Long id) {
+        return authorRepository.findById(id);
     }
 }

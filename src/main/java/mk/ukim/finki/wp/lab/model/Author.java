@@ -9,14 +9,24 @@ public class Author {
     private String surname;
     private String country;
     private String biography;
+    private Gender gender;
 
     private static Long idCounter = 0L;
-    public Author(String name, String surname, String country, String biography) {
+    public Author(String name, String surname, String country, String biography,Gender gender) {
         this.id = ++idCounter;
         this.name = name;
         this.surname = surname;
         this.country = country;
         this.biography = biography;
+        this.gender = gender;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 
     public Long getId() {

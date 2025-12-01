@@ -4,6 +4,7 @@ import jakarta.annotation.PostConstruct;
 import mk.ukim.finki.wp.lab.model.Author;
 import mk.ukim.finki.wp.lab.model.Book;
 import mk.ukim.finki.wp.lab.model.BookReservation;
+import mk.ukim.finki.wp.lab.model.Gender;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -19,9 +20,9 @@ public class DataHolder {
 
     @PostConstruct
     public void init() {
-        Author a1 = new Author("Author1", "Author11", "Country1", "Biography of Author1");
-        Author a2 = new Author("Author2", "Author22", "Country2", "Biography of Author2");
-        Author a3 = new Author("Author3", "Author33", "Country3", "Biography of Author3");
+        Author a1 = new Author("Author1", "Author11", "Country1", "Biography of Author1", Gender.MALE);
+        Author a2 = new Author("Author2", "Author22", "Country2", "Biography of Author2", Gender.FEMALE);
+        Author a3 = new Author("Author3", "Author33", "Country3", "Biography of Author3", Gender.FEMALE);
 
         authors.add(a1);
         authors.add(a2);
