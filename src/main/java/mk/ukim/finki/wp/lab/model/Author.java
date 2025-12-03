@@ -1,24 +1,35 @@
 package mk.ukim.finki.wp.lab.model;
 
-import lombok.Data;
+import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 
-@Data
+import java.util.List;
+
+@Entity
 public class Author {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
     private String surname;
     private String country;
     private String biography;
+
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    private static Long idCounter = 0L;
-    public Author(String name, String surname, String country, String biography,Gender gender) {
-        this.id = ++idCounter;
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    private List<Book> books;
+
+    public Author(String name, String surname, String country, String biography, Gender gender) {
         this.name = name;
         this.surname = surname;
         this.country = country;
         this.biography = biography;
         this.gender = gender;
+    }
+    public Author() {
     }
 
     public Gender getGender() {

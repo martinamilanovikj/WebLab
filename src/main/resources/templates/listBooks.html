@@ -9,7 +9,7 @@
 <div class="container mt-5">
 
     <h1>Books List</h1>
-    <form th:action="@{/}" method="get" class="row g-3 mb-3">
+    <form th:action="@{/books}" method="get" class="row g-3 mb-3">
         <div class="col-auto">
             <input type="text" name="filterName" class="form-control" placeholder="Filter by title"
                    th:value="${filterName}">

@@ -2,7 +2,7 @@ package mk.ukim.finki.wp.lab.service.impl;
 
 import mk.ukim.finki.wp.lab.model.Author;
 import mk.ukim.finki.wp.lab.model.Book;
-import mk.ukim.finki.wp.lab.repository.BookRepository;
+import mk.ukim.finki.wp.lab.repository.jpa.BookRepository;
 import mk.ukim.finki.wp.lab.service.BookService;
 import org.springframework.stereotype.Service;
 
@@ -15,42 +15,45 @@ public class BookServiceImpl implements BookService {
     public BookServiceImpl(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
     }
-
-    @Override
-    public List<Book> listAll() {
-        return this.bookRepository.findAll();
-    }
+@Override
+public List<Book> listAll() {
+    return bookRepository.findAll();
+}
 
     @Override
     public List<Book> searchBooks(String text, Double rating) {
-        return this.bookRepository.searchBooks(text,rating);
+        return bookRepository.findAll();
     }
 
     @Override
-    public Book addBook(Book book) {
-        return bookRepository.add(book);
+    public Book save(Book book) {
+        return bookRepository.save(book);
     }
 
     @Override
     public void updateBook(Long bookId, String title, String genre, Double averageRating, Author author) {
-        Book book = bookRepository.findById(bookId);
-        if (book != null) {
-            book.setTitle(title);
-            book.setGenre(genre);
-            book.setAverageRating(averageRating);
-            book.setAuthor(author);
-        }
+        Book book = findById(bookId);
+        book.setTitle(title);
+        book.setGenre(genre);
+        book.setAverageRating(averageRating);
+        book.setAuthor(author);
+        bookRepository.save(book);
     }
 
     @Override
-    public void deleteBook(Long bookId) {
+    public void deleteById(Long bookId) {
         bookRepository.deleteById(bookId);
     }
 
     @Override
     public Book findById(Long id) {
-        return bookRepository.findById(id);
+        return bookRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Book not found"));
     }
 
+    @Override
+    public List<Book> findAllByAuthor(Long authorId) {
+        return bookRepository.findAllByAuthor_Id(authorId);
+    }
 
 }

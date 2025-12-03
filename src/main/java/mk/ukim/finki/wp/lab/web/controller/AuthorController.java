@@ -35,7 +35,7 @@ public class AuthorController {
                            @RequestParam Gender gender) {
 
         Author newAuthor = new Author(name, surname, country, biography,gender);
-        this.authorService.addAuthor(newAuthor);
+        authorService.save(newAuthor);
 
         return "redirect:/authors";
     }
@@ -71,7 +71,7 @@ public class AuthorController {
 
     @PostMapping("/delete/{id}")
     public String deleteAuthor(@PathVariable Long id) {
-        authorService.deleteAuthor(id);
+        authorService.deleteById(id);
         return "redirect:/authors";
     }
 

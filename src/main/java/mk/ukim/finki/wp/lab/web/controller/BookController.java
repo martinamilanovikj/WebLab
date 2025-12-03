@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/books")
 public class BookController {
@@ -20,30 +22,45 @@ public class BookController {
         this.bookService = bookService;
         this.authorService = authorService;
     }
+@GetMapping
+public String getBooksPage(@RequestParam(required = false) String error,
+                           @RequestParam(required = false) String filterName,
+                           @RequestParam(required = false) Double filterRating,
+                           Model model) {
+    List<Book> books = bookService.listAll();
 
-    @GetMapping
-    public String getBooksPage(@RequestParam(required = false) String error, Model model){
-        if (error != null) {
-            model.addAttribute("error", error);
-        }
-        model.addAttribute("books", bookService.listAll());
-        return "listBooks";
+    if (filterName != null && !filterName.isEmpty()) {
+        books = books.stream()
+                .filter(b -> b.getTitle().toLowerCase().contains(filterName.toLowerCase()))
+                .toList();
     }
+
+    if (filterRating != null) {
+        books = books.stream()
+                .filter(b -> b.getAverageRating() >= filterRating)
+                .toList();
+    }
+
+    model.addAttribute("books", books);
+    model.addAttribute("filterName", filterName);
+    model.addAttribute("filterRating", filterRating);
+
+    if (error != null) {
+        model.addAttribute("error", error);
+    }
+
+    return "listBooks";
+}
 
     @PostMapping("/add")
     public String saveBook(@RequestParam String title,
                            @RequestParam String genre,
                            @RequestParam Double averageRating,
                            @RequestParam Long authorId) {
-        Author author = this.authorService.findAll().stream()
-                .filter(a -> a.getId().equals(authorId))
-                .findFirst()
-                .orElse(null);
 
+        Author author = authorService.findById(authorId);
         Book newBook = new Book(title, genre, averageRating,author);
-        newBook.setAuthor(author);
-        this.bookService.addBook(newBook);
-
+        bookService.save(newBook);
         return "redirect:/books";
     }
 
@@ -73,11 +90,7 @@ public class BookController {
                            @RequestParam Double averageRating,
                            @RequestParam Long authorId) {
 
-        Author author = authorService.findAll().stream()
-                .filter(a -> a.getId().equals(authorId))
-                .findFirst()
-                .orElse(null);
-
+        Author author = authorService.findById(authorId);
         bookService.updateBook(bookId, title, genre, averageRating, author);
 
         return "redirect:/books";
@@ -85,7 +98,7 @@ public class BookController {
 
     @PostMapping("/delete/{id}")
     public String deleteBook(@PathVariable Long id) {
-        bookService.deleteBook(id);
+        bookService.deleteById(id);
         return "redirect:/books";
     }
 
