@@ -11,17 +11,34 @@
     <h1>Books List</h1>
     <form th:action="@{/books}" method="get" class="row g-3 mb-3">
         <div class="col-auto">
-            <input type="text" name="filterName" class="form-control" placeholder="Filter by title"
-                   th:value="${filterName}">
+            <input type="text" name="title" class="form-control" placeholder="Filter by title"
+                   th:value="${title}">
         </div>
+
         <div class="col-auto">
-            <input type="number" step="0.01" min="0" name="filterRating" class="form-control"
-                   placeholder="Filter by rating" th:value="${filterRating}">
+            <select name="genre" class="form-select">
+                <option value="" th:text="'All Genres'" th:selected="${genre == null or genre.isEmpty()}"></option>
+                <option th:each="g : ${genres}"
+                        th:value="${g}"
+                        th:text="${g}"
+                        th:selected="${genre != null and genre == g}">
+                </option>
+            </select>
+
+
         </div>
+
+        <div class="col-auto">
+            <input type="number" step="0.01" min="0" name="averageRating" class="form-control"
+                   placeholder="Filter by rating" th:value="${averageRating}">
+        </div>
+
         <div class="col-auto">
             <button type="submit" class="btn btn-primary">Filter</button>
         </div>
     </form>
+
+
 
     <a th:href="@{/books/book-form}" class="btn btn-success mb-3">Add New Book</a>
 

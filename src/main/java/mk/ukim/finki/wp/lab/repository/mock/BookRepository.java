@@ -1,15 +1,15 @@
-package mk.ukim.finki.wp.lab.repository.mock;
-
-import mk.ukim.finki.wp.lab.model.Book;
-
-import java.util.List;
-
-public interface BookRepository {
-        List<Book> findAll();
-        List<Book> searchBooks(String text, Double rating);
-        Book add(Book book);
-        Book findById(Long id);
-        void deleteById(Long id);
-
-
-}
+//package mk.ukim.finki.wp.lab.repository.mock;
+//
+//import mk.ukim.finki.wp.lab.model.Book;
+//
+//import java.util.List;
+//
+//public interface BookRepository {
+//        List<Book> findAll();
+//        List<Book> searchBooks(String text, Double rating);
+//        Book add(Book book);
+//        Book findById(Long id);
+//        void deleteById(Long id);
+//
+//
+//}

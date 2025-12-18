@@ -4,6 +4,7 @@ import mk.ukim.finki.wp.lab.model.Author;
 import mk.ukim.finki.wp.lab.model.Book;
 import mk.ukim.finki.wp.lab.service.AuthorService;
 import mk.ukim.finki.wp.lab.service.BookService;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,35 +23,34 @@ public class BookController {
         this.bookService = bookService;
         this.authorService = authorService;
     }
-@GetMapping
-public String getBooksPage(@RequestParam(required = false) String error,
-                           @RequestParam(required = false) String filterName,
-                           @RequestParam(required = false) Double filterRating,
-                           Model model) {
-    List<Book> books = bookService.listAll();
+    @GetMapping
+    public String getProductPage(
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String genre,
+            @RequestParam(required = false) Double averageRating,
+            @RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            Model model
+    ) {
 
-    if (filterName != null && !filterName.isEmpty()) {
-        books = books.stream()
-                .filter(b -> b.getTitle().toLowerCase().contains(filterName.toLowerCase()))
+        Page<Book> books = bookService.find(title, genre, averageRating,pageNum - 1, pageSize);
+        model.addAttribute("page", books);
+        model.addAttribute("books", books.getContent());
+
+        model.addAttribute("title", title);
+        model.addAttribute("genre", genre);
+        model.addAttribute("averageRating", averageRating);
+
+        List<String> genres = bookService.listAll().stream()
+                .map(Book::getGenre)
+                .distinct()
                 .toList();
+        model.addAttribute("genres", genres);
+
+        model.addAttribute("bodyContent", "books");
+        return "listBooks";
     }
 
-    if (filterRating != null) {
-        books = books.stream()
-                .filter(b -> b.getAverageRating() >= filterRating)
-                .toList();
-    }
-
-    model.addAttribute("books", books);
-    model.addAttribute("filterName", filterName);
-    model.addAttribute("filterRating", filterRating);
-
-    if (error != null) {
-        model.addAttribute("error", error);
-    }
-
-    return "listBooks";
-}
 
     @PostMapping("/add")
     public String saveBook(@RequestParam String title,

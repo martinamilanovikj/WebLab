@@ -1,5 +1,4 @@
 package mk.ukim.finki.wp.lab.model;
-
 import lombok.Data;
 
 @Data

@@ -2,6 +2,7 @@ package mk.ukim.finki.wp.lab.service;
 
 import mk.ukim.finki.wp.lab.model.Author;
 import mk.ukim.finki.wp.lab.model.Book;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -13,5 +14,6 @@ public interface BookService {
     void deleteById(Long bookId);
     Book findById(Long id);
     List<Book> findAllByAuthor(Long authorId);
+    Page<Book> find(String title, String genre, Double averageRating, Integer pageNum, Integer pageSize);
 
 }

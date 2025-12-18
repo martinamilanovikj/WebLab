@@ -3,15 +3,15 @@ services:
   postgres:
     image: postgres:15
     container_name: books-postgres
-    restart: unless-stopped
+    restart: always
     environment:
       POSTGRES_DB: books
       POSTGRES_USER: wp
-      POSTGRES_PASSWORD: wp
+      POSTGRES_PASSWORD: wp123
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - pgdata_new:/var/lib/postgresql/data
 
 volumes:
-  pgdata:
+  pgdata_new:

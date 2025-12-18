@@ -4,9 +4,15 @@ import mk.ukim.finki.wp.lab.model.Author;
 import mk.ukim.finki.wp.lab.model.Book;
 import mk.ukim.finki.wp.lab.repository.jpa.BookRepository;
 import mk.ukim.finki.wp.lab.service.BookService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static mk.ukim.finki.wp.lab.service.FieldFilterSpecification.*;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -50,6 +56,20 @@ public List<Book> listAll() {
         return bookRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Book not found"));
     }
+
+    @Override
+    public Page<Book> find(String title, String genre, Double averageRating, Integer pageNum, Integer pageSize) {
+        Specification<Book> specification = Specification.allOf(
+                filterContainsText(Book.class, "title", title),
+                filterEqualsV(Book.class, "genre", genre),
+                greaterThan(Book.class, "averageRating", averageRating)
+        );
+        return this.bookRepository.findAll(
+                specification,
+                PageRequest.of(pageNum, pageSize));
+    }
+
+
 
     @Override
     public List<Book> findAllByAuthor(Long authorId) {
