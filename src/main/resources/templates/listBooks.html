@@ -39,8 +39,8 @@
     </form>
 
 
-
-    <a th:href="@{/books/book-form}" class="btn btn-success mb-3">Add New Book</a>
+    <a th:href="@{/books/book-form}" class="btn btn-success mb-3"
+       sec:authorize="hasRole('ADMIN')">Add New Book</a>
 
     <table class="table table-bordered">
         <thead>
@@ -59,10 +59,12 @@
             <td th:text="${book.averageRating}">Rating</td>
             <td th:text="${book.author != null} ? ${book.author.name} + ' ' + ${book.author.surname} : 'Unknown'">Author</td>
             <td>
-                <a th:href="@{'/books/book-form/' + ${book.id}}" class="btn btn-info btn-sm">Edit</a>
+                <a th:href="@{'/books/book-form/' + ${book.id}}" class="btn btn-info btn-sm"
+                   sec:authorize="hasRole('ADMIN')">Edit</a>
 
                 <form th:action="@{'/books/delete/' + ${book.id}}" method="post" style="display:inline">
-                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    <button type="submit" class="btn btn-danger btn-sm"
+                            sec:authorize="hasRole('ADMIN')">Delete</button>
                 </form>
             </td>
         </tr>
