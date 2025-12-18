@@ -75,8 +75,8 @@
     <form th:action="@{/bookReservation}" method="post">
         <div class="mb-3">
             <label for="bookTitle" class="form-label">Choose a Book:</label>
-            <select id="bookTitle" name="bookTitle" class="form-select" required>
-                <option th:each="book : ${books}" th:value="${book.title}"
+            <select id="book" name="book" class="form-select" required>
+                <option th:each="book : ${books}" th:value="${book.id}"
                         th:text="${book.title} + ' (' + ${book.genre} + ')'">
                 </option>
             </select>
